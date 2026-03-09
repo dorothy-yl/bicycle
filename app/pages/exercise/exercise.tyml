@@ -1,0 +1,81 @@
+<view class="container">
+  <!-- Header -->
+  <view class="header">
+    <view class="back-btn" bindtap="goBack">
+      <image class="back-icon" src="../../assets/icons/Vector.svg" />
+    </view>
+    <text class="header-title">{{pageTitle}}</text>
+    <view class="header-placeholder"></view>
+  </view>
+
+  <!-- HR and Calories Row -->
+  <view class="top-row">
+    <view class="top-stat-item">
+      <text class="top-stat-value">{{heartRate}}</text>
+      <text class="top-stat-label">{{hrBpmLabel}}</text>
+    </view>
+    <view class="vertical-divider"></view>
+    <view class="top-stat-item">
+      <view class="value-icon-row">
+        <text class="top-stat-value">{{calories}}</text>
+        <image class="heart-icon" src="../../assets/icons/Vector 2.svg" />
+      </view>
+      <text class="top-stat-label">{{caloriesKcalLabel}}</text>
+    </view>
+  </view>
+
+  <!-- Exercise Time Card -->
+  <view class="card timer-card">
+    <text class="card-label">{{workoutTimeLabel}}</text>
+    <text class="timer-display">{{formattedTime}}</text>
+  </view>
+
+  <!-- Distance Card -->
+  <view class="card timer-card">
+    <text class="card-label">{{distanceKmLabel}}</text>
+    <text class="timer-display">{{distance}}</text>
+  </view>
+
+  <!-- Speed Control Row -->
+  <view class="speed-control-row">
+    <view class="speed-control-btn" bindtap="handleDecreaseSpeed">
+      <text class="speed-control-icon {{isDecreaseSpeedPressed ? 'speed-control-icon-pressed' : ''}}">-</text>
+    </view>
+    <view class="speed-display-card">
+      <text class="card-label">{{speedKmhLabel}}</text>
+      <text class="speed-display-value">{{speed}}</text>
+    </view>
+    <view class="speed-control-btn" bindtap="handleIncreaseSpeed">
+      <text class="speed-control-icon {{isIncreaseSpeedPressed ? 'speed-control-icon-pressed' : ''}}">+</text>
+    </view>
+  </view>
+
+
+  <!-- Load Gauge Section -->
+  <view class="gauge-section">
+    <view class="gauge-wrapper" catchtouchmove="handleTouchMove" catchtouchstart="handleTouchMove" catchtouchend="handleTouchEnd">
+      <!-- Background Arc -->
+      <view class="gauge-background"></view>
+      <!-- Progress Arc (Dynamic) -->
+      <view class="gauge-progress" style="{{gaugeProgressStyle}}"></view>
+      <!-- Center Text -->
+      <view class="gauge-center-cover">
+        <text class="gauge-center-value">{{load}}</text>
+        <text class="gauge-center-label">{{inclineLabel}}</text>
+      </view>
+      <!-- Gauge Knob -->
+      <view class="gauge-knob-container" style="transform: rotate({{knobAngle}}deg);">
+         <view class="gauge-knob"></view>
+      </view>
+    </view>
+    <view class="gauge-labels">
+      <text>0</text>
+      <text>32</text>
+    </view>
+  </view>
+
+  <!-- Bottom Button -->
+  <view class="footer">
+    <button class="main-action-btn" bindlongpress="handleMainActionLongPress" bindtap="handleMainActionTap">{{startHoldStopLabel}}</button>
+  </view>
+</view>

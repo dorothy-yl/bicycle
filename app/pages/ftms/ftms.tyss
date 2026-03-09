@@ -1,0 +1,134 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: #2C3A4A;
+  min-height: 100vh;
+  padding: 40rpx;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 0;
+  margin-bottom: 40rpx;
+  position: relative;
+  height: 176rpx; /* Ensure enough height */
+}
+
+.back-btn {
+  width: 60rpx; /* Increased touch area */
+  height: 60rpx;
+  position: absolute;
+  margin-top: 106rpx;
+  left: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 10; /* Ensure above title if overlap */
+}
+
+.back-icon {
+  width: 18rpx;
+  height: 36rpx;
+}
+
+.header-title {
+  color: #FFFFFF;
+  font-size: 36rpx;
+  font-weight: 500;
+  margin-top: 106rpx;
+}
+
+.icon-section {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 400rpx;
+  margin-bottom: 80rpx;
+  gap: 80rpx;
+}
+
+.device-icon {
+  width: 160rpx;
+  height: 160rpx;
+}
+
+.dots-container {
+  display: flex;
+  gap: 32rpx;
+  align-items: center;
+}
+
+.dot {
+  width: 20rpx;
+  height: 20rpx;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  opacity: 0;
+  animation: dotFade 1.5s infinite;
+}
+
+.dot:nth-child(1) { animation-delay: 0s; }
+.dot:nth-child(2) { animation-delay: 0.5s; }
+.dot:nth-child(3) { animation-delay: 1s; }
+
+@keyframes dotFade {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
+.controls-wrapper {
+  width: 100%;
+  margin-bottom: 120rpx;
+}
+
+.control-row {
+  background-color: #2B3240;
+  border-radius: 32rpx;
+  padding: 48rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 48rpx;
+}
+
+.control-label {
+  color: #FFFFFF;
+  font-size: 36rpx;
+  font-weight: 400;
+}
+
+.slider-card {
+  background-color: #2B3240;
+  border-radius: 32rpx;
+  padding: 48rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.slider-value {
+  color: #FFFFFF;
+  font-size: 64rpx;
+  font-weight: 500;
+  margin-bottom: 48rpx;
+}
+
+.slider-body {
+  width: 100%;
+  margin-bottom: 24rpx;
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  color: #FFFFFF;
+  font-size: 28rpx;
+  opacity: 0.8;
+}

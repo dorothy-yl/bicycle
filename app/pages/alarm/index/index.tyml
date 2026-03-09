@@ -1,0 +1,202 @@
+<view class="container">
+  <!-- Custom Header -->
+  <view class="custom-header">
+    <view class="header-left" bindtap="onBack">
+      <image class="back-icon" src="../../../assets/icons/Vector.svg" />
+    </view>
+    <view class="header-center">
+      <text class="header-title">{{activeTab === 'schedule' ? schedulesLabel : tipsLabel}}</text>
+    </view>
+    
+    <view class="header-right">
+<image 
+  class="delete-icon" 
+  ty:if="{{activeTab === 'tips' && editingTipId}}"
+  src="../../../assets/icons/trash.svg" 
+  bindtap="deleteTip"
+  data-id="{{editingTipId}}" 
+/>
+      
+      <!-- 我的日程页面：显示+号按钮 -->
+      <image 
+        class="add-icon" 
+        ty:if="{{activeTab === 'schedule'}}"
+        src="../../../assets/add.svg" 
+        bindtap="goToCreateTip"
+      />
+    </view>
+  </view>
+
+  <!-- Content Wrapper -->
+  <view class="content-wrapper" bindtap="closeAllPickers">
+    <!-- Tips 标签页 -->
+    <view class="tips-content" ty:if="{{activeTab === 'tips'}}">
+      <scroll-view class="tips-scroll-view" scroll-y="true">
+        <!-- 标题输入 -->
+        <view class="form-item-rect" catchtap="stopPropagation">
+          <input 
+            class="form-input-rect" 
+            type="text" 
+            placeholder="{{titlePlaceholder}}"
+            value="{{tipTitle}}"
+            bindinput="onTitleInput"
+            confirm-type="done"
+          />
+        </view>
+
+        <!-- 日期选择 -->
+        <view class="form-item-wrapper {{showDatePicker ? 'picker-expanded' : ''}}" catchtap="stopPropagation">
+          <view class="form-item-rect" bindtap="toggleDatePicker">
+            <image class="form-icon-left" src="../../../assets/icons/calendar.svg" mode="aspectFit" />
+            <text class="form-label-rect">{{dateLabel}}</text>
+            <text class="form-value-text-rect {{selectedDate ? 'selected' : ''}}">
+              {{dateDisplayText}}
+            </text>
+          </view>
+          
+          <!-- 内联日期选择器 -->
+          <view class="inline-date-picker {{showDatePicker ? 'expanded' : ''}}">
+            <!-- 月份和年显示行 -->
+            <view class="calendar-year-month-header">
+              <view class="calendar-year-month-left">
+                <text class="calendar-year-month-text">{{currentMonthText}}</text>
+                <view class="calendar-year-select-btn" bindtap="showYearPicker">
+                  <text class="calendar-year-arrow">›</text>
+                </view>
+              </view>
+              <!-- 月份切换导航 -->
+              <view class="calendar-month-nav-inline">
+                <view class="calendar-month-nav-btn" bindtap="prevMonth">
+                  <text class="calendar-nav-arrow">‹</text>
+                </view>
+                <view class="calendar-month-nav-btn" bindtap="nextMonth">
+                  <text class="calendar-nav-arrow">›</text>
+                </view>
+              </view>
+            </view>
+
+            <!-- 日期网格 -->
+            <view class="calendar-grid">
+              <view 
+                class="calendar-day {{item.isEmpty ? 'empty' : ''}} {{item.isToday ? 'today' : ''}} {{item.isSelected ? 'selected' : ''}}"
+                ty:for="{{calendarDays}}" 
+                ty:key="index"
+                bindtap="selectDateFromCalendar"
+                data-date="{{item.date}}"
+                data-is-empty="{{item.isEmpty}}"
+              >
+                <text class="calendar-day-number" ty:if="{{!item.isEmpty}}">{{item.day}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 时间选择 -->
+        <view class="form-item-wrapper {{showTimePicker ? 'picker-expanded' : ''}}" catchtap="stopPropagation">
+          <view class="form-item-rect" bindtap="toggleTimePicker">
+            <image class="form-icon-left" src="../../../assets/icons/clock.svg" mode="aspectFit" />
+            <text class="form-label-rect">{{timeLabel}}</text>
+            <text class="form-value-text-rect selected">{{timeDisplayText}}</text>
+          </view>
+          
+          <!-- 内联时间选择器 -->
+          <view class="inline-time-picker {{showTimePicker ? 'expanded' : ''}}">
+            <view class="time-picker-wrapper">
+              
+              <!-- 时间选择器容器 -->
+              <view class="time-picker-container">
+              <picker-view 
+                class="time-picker-view"
+                value="{{timePickerIndex}}"
+                bindchange="onTimePickerChange"
+                indicator-style="height: 40px; background-color: rgba(255, 255, 255, 0.3); border-radius: 6px;"
+                mask-style="opacity: 0;"
+              >
+                  <!-- 小时选择器 -->
+                  <picker-view-column class="time-picker-column time-picker-column-left ">
+                    <view 
+                      class="time-picker-item"
+                      ty:for="{{timePickerHours}}"
+                      ty:key="*this"
+                    >
+                      <text class="time-picker-text">{{item}}</text>
+                    </view>
+                  </picker-view-column>
+                  
+                  <!-- 分钟选择器 -->
+                  <picker-view-column class="time-picker-column time-picker-column-right">
+                    <view 
+                      class="time-picker-item"
+                      ty:for="{{timePickerMinutes}}"
+                      ty:key="*this"
+                    >
+                      <text class="time-picker-text">{{item}}</text>
+                    </view>
+                  </picker-view-column>
+                </picker-view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 我的日程标签页 -->
+    <view class="schedule-content" ty:if="{{activeTab === 'schedule'}}">
+      <scroll-view class="schedule-list" scroll-y="true">
+        <view 
+          class="schedule-card" 
+          ty:for="{{tips}}" 
+          ty:key="id"
+          bindtap="editTip"
+          data-id="{{item.id}}"
+        >
+          <text class="schedule-card-title">{{item.title}}</text>
+          <view class="schedule-card-footer">
+            <text class="schedule-card-date">{{item.formattedDate}}</text>
+            <text class="schedule-card-time">{{item.formattedTime}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 固定底部按钮 -->
+  <view class="sure-button-fixed" ty:if="{{activeTab === 'tips'}}" bindtap="saveTip">
+    <text class="sure-button-text">{{confirmLabel}}</text>
+  </view>
+
+  <!-- 年份选择器弹窗 -->
+  <view class="year-picker-modal" ty:if="{{showYearPicker}}" bindtap="hideYearPicker">
+    <view class="year-picker-content" catchtap="stopPropagation">
+      <view class="year-picker-header">
+        <text class="year-picker-title">{{chooseYearLabel}}</text>
+        <view class="year-picker-close" bindtap="hideYearPicker">
+          <text>×</text>
+        </view>
+      </view>
+      <view class="year-picker-container">
+        <picker-view 
+          class="year-picker-view"
+          value="{{yearPickerIndex}}"
+          bindchange="onYearPickerChange"
+          indicator-style="height: 40px; background-color: rgba(255,255,255, 0.1); border-top: 1px solid rgba(255,255,255, 0.1); border-bottom: 1px solid rgba(255,255,255, 0.1);"
+          mask-style="opacity: 0.3;"
+        >
+          <picker-view-column>
+            <view 
+              class="year-picker-item"
+              ty:for="{{yearPickerYears}}"
+              ty:key="*this"
+            >
+              <text class="year-picker-text">{{item}}</text>
+            </view>
+          </picker-view-column>
+        </picker-view>
+      </view>
+      <view class="year-picker-footer">
+        <button class="year-picker-confirm-btn" bindtap="confirmYear">{{confirmLabel}}</button>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,86 @@
+<view class="container">
+  <image class="bg-image" src="../../assets/Sportswoman.png" mode="aspectFill"></image>
+  <view class="overlay"></view>
+
+  <view class="content">
+    <text class="page-title">{{pageTitle}}</text>
+
+    <view class="top-card">
+      <view class="user-header">
+        <view class="avatar-circle">
+          <image class="avatar-icon" src="../../assets/icons/my.svg" mode="aspectFit"></image>
+        </view>
+        <view class="user-info">
+          <text class="user-name">{{userName}}</text>
+          <text class="date">{{date}}</text>
+        </view>
+      </view>
+
+      <view class="main-circle-section">
+        <image class="progress-ring-img" src="../../assets/radius.svg" mode="aspectFit"></image>
+        <view class="ring-content">
+          <view class="ring-value-row">
+             <text class="ring-value">{{caloriesBurned}}</text>
+             <text class="ring-unit">{{kcalUnit}}</text>
+          </view>
+          <text class="ring-label">{{caloriesLabel}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="stats-container">
+      <!-- Top Wide Card -->
+      <view class="stats-card wide-card">
+        <view class="stat-item">
+          <text class="stat-value">{{duration}}</text>
+          <text class="stat-label">{{workoutTimeLabel}}</text>
+        </view>
+        <view class="vertical-line"></view>
+        <view class="stat-item">
+          <text class="stat-value">{{hrBpm}}</text>
+          <text class="stat-label">{{hrBpmLabel}}</text>
+        </view>
+      </view>
+
+      <!-- Bottom Grid -->
+      <view class="bottom-grid">
+        <!-- Left Big Card - Speed -->
+        <view class="stats-card big-card">
+          <text class="card-title">{{speedLabel}}</text>
+          <view class="card-icon">
+            <image src="../../assets/icons/Vector 1.svg" mode="aspectFit"></image>
+          </view>
+          <view class="big-value-row">
+            <text class="big-value">{{avgSpeed}}</text>
+          </view>
+        </view>
+
+        <!-- Right Column -->
+        <view class="right-column">
+          <!-- Incline Card -->
+          <view class="stats-card small-card">
+            <text class="card-title">{{inclineLabel}}</text>
+            <view class="card-icon-small">
+              <image src="../../assets/icons/Group 19.svg" mode="aspectFit"></image>
+            </view>
+            <view class="small-value-row">
+              <text class="medium-value">{{incline}}</text>
+            </view>
+          </view>
+          <!-- Distance Card -->
+          <view class="stats-card small-card">
+            <text class="card-title">{{distanceLabel}}</text>
+            <view class="card-icon-small">
+              <image src="../../assets/icons/Group 11.svg" mode="aspectFit"></image>
+            </view>
+            <view class="small-value-row">
+              <text class="medium-value">{{distance}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <bottom-nav activeTab="user" />
+</view>
+

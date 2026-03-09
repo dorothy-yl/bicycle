@@ -1,0 +1,97 @@
+<view class="container">
+  <view class="header">
+    <text class="page-title">{{workoutRecordsLabel}}</text>
+  </view>
+  <view class="date-selector">
+    <view class="arrow-btn left" bindtap="prevDate">
+      <image class="arrow-icon" src="../../assets/icons/Vector.svg" mode="aspectFit"></image>
+    </view>
+    <view class="current-date" bindtap="showCalendar">
+      <text>{{currentDate}}</text>
+      <view class="triangle-down">▼</view>
+    </view>
+    <view class="arrow-btn right" bindtap="nextDate">
+      <image class="arrow-icon" src="/../../assets/icons/Vector.svg"  mode="aspectFit"></image>
+    </view>
+  </view>
+
+  <scroll-view class="record-list" scroll-y="true" refresher-enabled="true" refresher-triggered="{{isRefreshing}}" bindrefresherrefresh="onRefresherRefresh" refresher-background="#2C3A4A">
+    <!-- Loading 状态 -->
+    <view class="loading-placeholder" ty:if="{{isLoading}}">
+      <text class="loading-text">加载中...</text>
+    </view>
+    
+    <!-- 空状态占位 -->
+    <view class="empty-placeholder" ty:if="{{!isLoading && records.length === 0}}">
+      <text class="empty-text">{{noRecordsTodayLabel}}</text>
+    </view>
+    
+    <!-- 记录卡片列表 -->
+   <view class="record-card" ty:if="{{!isLoading}}" ty:for="{{records}}" ty:key="id" ty:for-item="item" bindtap="goToDetail" data-id="{{item.id}}">
+      <view class="card-header">
+        <view class="duration-group">
+          <text class="duration-val">{{item.title}}</text>
+        </view>
+        <text class="record-date">{{item.date}}</text>
+      </view>
+      
+      <view class="card-stats">
+        <view class="stat-item">
+          <text class="stat-label">{{hrBpmLabel}}</text>
+          <text class="stat-val">{{item.heartRate}}</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-label">{{inclineLabel}}</text>
+          <text class="stat-val">{{item.incline}}</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-label">{{distanceKmLabel}}</text>
+          <text class="stat-val">{{item.distance}}</text>
+        </view>
+      </view>
+     
+    </view>
+  </scroll-view>
+
+  <!-- 日历弹窗 -->
+  <view class="calendar-modal" ty:if="{{showCalendar}}" bindtap="hideCalendar">
+    <view class="calendar-modal-content" catchtap="stopPropagation">
+      <!-- 月份导航 -->
+      <view class="calendar-month-header">
+        <view class="calendar-month-nav-btn" bindtap="prevMonth">
+          <text class="calendar-nav-arrow">‹</text>
+        </view>
+        <text class="calendar-month-title">{{currentMonthText}}</text>
+        <view class="calendar-month-nav-btn" bindtap="nextMonth">
+          <text class="calendar-nav-arrow">›</text>
+        </view>
+      </view>
+
+      <!-- 星期标题行 -->
+      <view class="calendar-weekday-headers">
+        <view class="calendar-weekday-header" ty:for="{{weekdays}}" ty:key="*this">
+          <text class="calendar-weekday-text">{{item}}</text>
+        </view>
+      </view>
+
+      <!-- 日期网格 -->
+      <view class="calendar-grid">
+        <view 
+          class="calendar-day {{item.isCurrentMonth ? '' : 'other-month'}} {{item.isToday ? 'today' : ''}} {{item.isSelected ? 'selected' : ''}}"
+          ty:for="{{calendarDays}}" 
+          ty:key="date"
+          bindtap="selectDateFromCalendar"
+          data-date="{{item.date}}"
+        >
+          <text class="calendar-day-number">{{item.day}}</text>
+          <view class="calendar-day-dot" ty:if="{{item.hasRecord}}"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Bottom Navigation -->
+  <bottom-nav activeTab="clock" />
+</view>

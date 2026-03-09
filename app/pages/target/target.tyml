@@ -1,0 +1,57 @@
+<view class="container">
+  <image class="background-image" src="../../assets/Sportsman .png" mode="aspectFill"></image>
+  <view class="overlay"></view>
+  <!-- Header -->
+  <view class="header">
+    <view class="back-btn" bindtap="goBack">
+      <image class="back-icon" src="../../assets/icons/Vector.svg" />
+    </view>
+    <text class="header-title thin">{{pageTitle}}</text>
+    <view class="header-placeholder"></view>
+  </view>
+
+  <!-- Tab Bar -->
+  <view class="tab-bar">
+    <view class="tab-item {{activeTab === 'distance' ? 'active' : ''}}" bindtap="switchTab" data-tab="distance">
+      <text class="tab-text">{{distanceLabel}}</text>
+      <view class="tab-underline" ty:if="{{activeTab === 'distance'}}"></view>
+    </view>
+    <view class="tab-item {{activeTab === 'time' ? 'active' : ''}}" bindtap="switchTab" data-tab="time">
+      <text class="tab-text">{{timeLabel}}</text>
+      <view class="tab-underline" ty:if="{{activeTab === 'time'}}"></view>
+    </view>
+    <view class="tab-item {{activeTab === 'calories' ? 'active' : ''}}" bindtap="switchTab" data-tab="calories">
+      <text class="tab-text">{{caloriesLabel}}</text>
+      <view class="tab-underline" ty:if="{{activeTab === 'calories'}}"></view>
+    </view>
+  </view>
+
+  <!-- Picker Container -->
+  <view class="picker-container">
+    <picker-view 
+      class="target-picker"
+      mask-style="opacity:0" 
+      indicator-style="height: 96rpx; opacity: 0.5;"
+      value="{{pickerIndex}}" 
+      bindchange="onPickerChange"
+    >
+      <picker-view-column>
+        <view ty:for="{{range}}" ty:key="*this" class="picker-item {{pickerIndex[0] === index ? 'active' : ''}}">
+          {{item}}
+        </view>
+      </picker-view-column>
+    </picker-view>
+    <text class="unit-overlay">{{unitText}}</text>
+  </view>
+
+  <!-- Empty State Hint -->
+  <view class="empty-hint {{showEmptyHint ? 'show' : ''}}">
+    <text class="empty-hint-text">{{pleaseSetTarget}} {{activeTab === 'calories' ? caloriesLabel : unitText}}</text>
+  </view>
+
+  <!-- Start Exercise Button -->
+  <view class="footer">
+    <button class="start-btn" bindtap="startExercise">{{startWorkoutLabel}}</button>
+  </view>
+</view>
+

@@ -1,0 +1,52 @@
+<view class="container">
+<!-- Header -->
+  <view class="header">
+    <view class="back-btn" bindtap="goBack">
+      <image class="back-icon" src="../../assets/icons/Vector.svg" />
+    </view>
+    <text class="header-title">{{ftmsLabel}}</text>
+  </view>
+
+  <view class="icon-section">
+    <image class="device-icon" src="../../assets/icons/connect.svg" mode="aspectFit"></image>
+    <view class="dots-container">
+       <view class="dot"></view>
+       <view class="dot"></view>
+       <view class="dot"></view>
+    </view>
+    <image class="device-icon" src="../../assets/icons/connect2.svg" mode="aspectFit"></image>
+  </view>
+
+  <view class="controls-wrapper">
+    <view class="control-row">
+      <text class="control-label">FTMS</text>
+      <switch 
+        checked="{{ftmsEnabled}}" 
+        bindchange="toggleFTMS" 
+        color="#A8E600"
+      />
+    </view>
+
+    <view class="slider-card">
+      <text class="slider-value">{{resistance}}%</text>
+      <view class="slider-body">
+        <slider 
+          min="-50" 
+          max="50" 
+          value="{{resistance}}" 
+          activeColor="#A8E600" 
+          backgroundColor="#4A5568" 
+          block-size="24" 
+          block-color="#A8E600"
+          bindchanging="changeResistance"
+          bindchange="changeResistance"
+        />
+      </view>
+      <view class="slider-labels">
+        <text>-50</text>
+        <text>+50</text>
+      </view>
+    </view>
+  </view>
+</view>
+

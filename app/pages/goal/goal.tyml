@@ -1,0 +1,55 @@
+<view class="container">
+  <image class="background-image" src="../../assets/Sportsman .png" mode="aspectFill"></image>
+  <view class="overlay"></view>
+
+  <!-- Custom Navigation Bar -->
+  <view class="custom-nav" style="padding-top: {{statusBarHeight}}px">
+    <view class="nav-content">
+      <view class="back-btn" bindtap="goBack">
+        <image src="../../assets/icons/Vector.svg" class="back-icon" ></image>
+      </view>
+      <text class="nav-title">{{setGoalsLabel}}</text>
+    </view>
+  </view>
+
+  <!-- Goal Selection View -->
+  <view class="content">
+    <view class="goal-buttons">
+      <button class="goal-btn {{activeButton === 'time' ? 'primary' : 'secondary'}}" bindtap="showTimePicker">{{timeLabel}}</button>
+      <button class="goal-btn {{activeButton === 'calories' ? 'primary' : 'secondary'}}" bindtap="showCaloriesPicker">{{caloriesLabel}}</button>
+      <button class="goal-btn {{activeButton === 'distance' ? 'primary' : 'secondary'}}" bindtap="showDistancePicker">{{distanceLabel}}</button>
+    </view>
+  </view>
+
+  <!-- Modal Overlay -->
+  <view class="modal-overlay" ty:if="{{showModal}}" bindtap="closeModal">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-picker-container">
+        <!-- Blue Box for Title -->
+        <view class="modal-title-box">
+          <text class="modal-title-text">{{titleText}}</text>
+        </view>
+        <!-- Red Box for Picker -->
+        <view class="modal-picker-box">
+          <picker-view 
+            class="modal-picker"
+            mask-style="opacity:0" 
+            indicator-style="height: 60px; opacity: 0.5;"
+            value="{{pickerIndex}}" 
+            bindchange="onPickerChange"
+            visible-item-count="5" 
+          >
+            <picker-view-column>
+              <view ty:for="{{range}}" ty:key="*this" class="modal-picker-item {{pickerIndex[0] === index ? 'active' : ''}}">
+                {{item}}
+              </view>
+            </picker-view-column>
+          </picker-view>
+          <text class="modal-unit">{{unitText}}</text>
+        </view>
+      </view>
+      <button class="modal-confirm-btn" bindtap="confirmGoal">{{confirmLabel}}</button>
+    </view>
+  </view>
+</view>
+

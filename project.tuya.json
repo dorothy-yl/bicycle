@@ -1,0 +1,16 @@
+{
+  "projectname": "Treadmill",
+  "i18n": true,
+  "description": "",
+  "miniprogramRoot": "app/",
+  "baseversion": "2.29.13",
+  "dependencies": {
+    "BaseKit": "3.0.6",
+    "MiniKit": "3.0.7",
+    "BizKit": "4.2.0",
+    "DeviceKit": "4.6.1"
+  },
+  "compileType": "miniprogram",
+  "remoteDebug": "mqtt",
+  "remoteVersion": "2.0"
+}

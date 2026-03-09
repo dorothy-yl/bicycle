@@ -1,0 +1,353 @@
+/* Base Styles */
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: #2C3A4A; /* Dark Blue/Gray Background */
+  height: 100vh;
+  overflow: hidden;
+  color: #FFFFFF;
+  padding: 0 40rpx;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  /* 平板适配：限制最大宽度并居中 */
+  max-width: 750rpx;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 88rpx 0 24rpx 0; /* Top padding for status bar area */
+  position: relative; /* Needed for absolute positioning of title */
+  flex-shrink: 0;
+}
+
+.back-btn {
+  width: 60rpx; /* Increased touch area */
+  height: 60rpx;
+  position: absolute;
+  margin-top: 106rpx;
+  left: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 10; /* Ensure above title if overlap */
+}
+
+.back-icon {
+  width: 18rpx;
+  height: 36rpx;
+}
+
+.header-title {
+  font-size: 36rpx;
+  font-weight: 500;
+  color: #FFFFFF;
+  margin-top: 106rpx;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.header-placeholder {
+  width: 60rpx; /* Match back-btn width for symmetry if we weren't using absolute */
+  height: 50rpx;
+  visibility: hidden;
+}
+
+/* Top Row: Speed & Heart Rate */
+.top-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 32rpx;
+  margin-top: 32rpx;
+  flex-shrink: 0;
+}
+
+.top-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.value-icon-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.heart-icon {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.top-stat-value {
+  font-size: 96rpx;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.top-stat-label {
+  font-size: 28rpx;
+  color: #8E97A3;
+  margin-top: 8rpx;
+}
+
+.vertical-divider {
+  width: 2rpx;
+  height: 80rpx;
+  background-color: #3A4452;
+  margin: 0 40rpx;
+}
+
+/* Cards Common */
+.card {
+  background-color: #2B3240;
+  border-radius: 24rpx;
+  padding: 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-label {
+  font-size: 28rpx;
+  color: #BABABA;
+  margin-bottom: 16rpx;
+}
+
+/* Timer Card */
+.timer-card {
+  height: 198rpx;
+  display: flex;
+  justify-content: center; /* 修正错误写法：justify -> justify-content */
+  align-items: center;
+  flex-direction: column; /* 让标签和时间垂直排列 */
+  background-color: #151F2F;
+  margin-bottom: 24rpx;
+  padding: 50rpx 40rpx;
+  flex-shrink: 0;
+}
+
+/* Speed Control Row */
+.speed-control-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24rpx;
+  gap: 24rpx;
+  flex-shrink: 0;
+}
+
+.speed-control-btn {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  background-color: #2B3240;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.speed-control-icon {
+  font-size: 84rpx;
+  color: #FFFFFF;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.speed-control-icon-pressed {
+  color: #A2E525;
+}
+
+.speed-display-card {
+  flex: 1;
+  background-color: #151F2F;
+  border-radius: 24rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 198rpx;
+}
+
+.speed-display-value {
+  font-size: 96rpx;
+  font-weight: bold;
+  font-family: monospace;
+  letter-spacing: 4rpx;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.timer-display {
+  font-size: 96rpx;
+  font-weight: bold;
+  font-family: monospace;
+  letter-spacing: 4rpx;
+  text-align: center; /* 文本自身水平居中兜底 */
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: flex;
+  gap: 24rpx;
+  margin-bottom: 24rpx;
+  flex-shrink: 0;
+}
+
+.stat-card {
+  flex: 1;
+  padding: 30rpx 20rpx;
+}
+
+.card-value {
+  font-size: 64rpx;
+  font-weight: bold;
+}
+
+/* Gauge Section */
+.gauge-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.gauge-wrapper {
+  width: 380rpx;
+  height: 380rpx;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gauge-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(from 225deg, #3A4452 0deg, #3A4452 270deg, transparent 270deg);
+  mask: radial-gradient(transparent 60%, black 61%);
+  -webkit-mask: radial-gradient(transparent 60%, black 61%);
+}
+
+.gauge-progress {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  /* background is set via inline style */
+  mask: radial-gradient(transparent 60%, black 61%);
+  -webkit-mask: radial-gradient(transparent 60%, black 61%);
+}
+
+.gauge-center-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.gauge-center-value {
+  font-size: 112rpx;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.gauge-center-label {
+  font-size: 32rpx;
+  color: #8E97A3;
+  margin-top: 10rpx;
+}
+
+/* Knob styles */
+.gauge-knob-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 12;
+}
+
+.gauge-knob {
+  width: 48rpx;
+  height: 48rpx;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: -10rpx; /* Adjust based on radius to sit on the arc */
+  left: 50%;
+  margin-left: -16rpx; /* Center the knob */
+  /* This positioning places it at the top (0 deg in CSS usually), we rotate the container to move it */
+}
+
+/* Because 0deg is usually top in CSS transforms, and our radius is ~110px (220/2)
+   If we place it at top: 0 (relative to container), it's at 12 o'clock.
+   Our logic uses 225deg as start.
+   225 degrees from 12 o'clock clockwise is bottom-left.
+   Wait, CSS rotate(0deg) is usually 12 o'clock or 3 o'clock?
+   Standard Transform rotate is clockwise from 12 o'clock (if element is upright).
+   Let's verify.
+   If I place knob at top: 0, left: 50%. That is 12 o'clock.
+   rotate(225deg) will move it to bottom-left.
+   So my logic seems correct.
+*/
+
+.gauge-labels {
+  width: 480rpx;
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 50rpx;
+  font-size: 48rpx;
+  color: #FFFFFF;
+  font-weight: bold;
+}
+
+/* Footer Button */
+.footer {
+  width: 100%;
+  padding-bottom: 40rpx;
+  flex-shrink: 0;
+}
+
+.main-action-btn {
+  background-color: #FFFFFF;
+  color: #000000;
+  border-radius: 60rpx;
+  height: 112rpx;
+  font-size: 36rpx;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+/* 平板适配 */
+@media screen and (min-width: 768px) {
+  .gauge-wrapper {
+    width: 750rpx;
+    height: 750rpx;
+  }
+  .gauge-center-value {
+    font-size: 36rpx;
+  }
+}

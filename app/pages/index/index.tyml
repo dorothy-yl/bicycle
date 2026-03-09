@@ -1,0 +1,60 @@
+<view class="container">
+<view class="page-title">{{pageTitle}}</view>
+  <view class="exercise-summary">
+  <view class="summary-left">
+    <view class="summary-group">
+      <view class="summary-item">
+        <text class="summary-value">{{exerciseTime}}</text>
+        <text class="summary-label">{{exerciseTimeLabel}}</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-value">{{distance}}</text>
+        <text class="summary-label">{{distanceLabel}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="summary-right">
+    <view class="bicycle-circle-outer">
+      <view class="bicycle-circle-inner">
+        <image class="bicycle-image" src="../../assets/Bicycle.png" mode="aspectFit"></image>
+      </view>
+    </view>
+  </view>
+</view>
+
+  <view class="common-functions">
+    <view class="section-title">{{commonFunctionsLabel}}</view>
+    <view class="function-grid">
+      <view class="function-item1" bindtap="goToExercise">
+        <view class="function-icon-wrapper">
+          <image class="function-icon" src="../../assets/icons/Quick Start.svg" mode="aspectFit"></image>
+        </view>
+        <text class="function-label">{{quickStartLabel}}</text>
+      </view>
+      
+      <view class="function-item2" bindtap="goToGoal">
+        <view class="function-icon-wrapper target-pattern">
+          <image class="function-icon" src="../../assets/icons/Target patterm.svg" mode="aspectFit"></image>
+        </view>
+        <text class="function-label">{{targetPatternLabel}}</text>
+      </view>
+      
+      <view class="function-item3" bindtap="goToFTMS">
+        <view class="function-icon-wrapper ftms">
+          <image class="function-icon" src="../../assets/icons/ftms.svg" mode="aspectFit"></image>
+        </view>
+        <text class="function-label">{{ftmsLabel}}</text>
+      </view>
+      
+      <view class="function-item4" bindtap="goToTirp">
+        <view class="function-icon-wrapper tirp">
+          <image class="function-icon" src="../../assets/icons/Trip.svg" mode="aspectFit"></image>
+        </view>
+        <text class="function-label">{{tipsLabel}}</text>
+      </view>
+    </view>
+  </view>
+
+  <bottom-nav activeTab="home" />
+</view>

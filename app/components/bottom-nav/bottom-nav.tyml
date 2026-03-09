@@ -1,0 +1,15 @@
+<view class="bottom-nav-wrapper">
+  <view class="bottom-nav">
+    <view class="nav-item" bindtap="onSwitchTab" data-path="/pages/index/index" data-tab="home">
+      <image class="nav-icon" src="{{activeTab === 'home' ? '../../assets/icons/index_1.svg' : '../../assets/icons/home_gray.svg'}}" />
+    </view>
+    
+    <view class="nav-item" bindtap="onSwitchTab" data-path="/pages/history/history" data-tab="clock">
+      <image class="nav-icon" src="{{activeTab === 'clock' ? '../../assets/icons/clock_green.svg' : '../../assets/icons/recodes.svg'}}" />
+    </view>
+
+    <view class="nav-item" bindtap="onSwitchTab" data-path="/pages/congrats/congrats" data-tab="user">
+      <image class="nav-icon" src="{{activeTab === 'user' ? '../../assets/icons/user_green.svg' : '../../assets/icons/my.svg'}}" />
+    </view>
+  </view>
+</view>

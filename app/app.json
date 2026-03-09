@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/exercise/exercise",
+    "pages/history/history",
+    "pages/ftms/ftms",
+    "pages/congrats/congrats",
+    "pages/history-detail/history-detail",
+    "pages/alarm/index/index",
+    "pages/target/target",
+    "pages/goal/goal"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "navigationBarTitleText": "Treadmill"
+  }
+}
+

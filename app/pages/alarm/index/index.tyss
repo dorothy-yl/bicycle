@@ -1,0 +1,654 @@
+.container {
+  background-color: #2C3A4A;
+  height: 100vh;
+  width: 100vw;
+  color: #fff;
+  padding-bottom: 240rpx; /* 为固定按钮留出空间 */
+}
+
+.custom-header {
+  position: fixed;
+  margin-top: 100rpx;
+  left: 0;
+  width: 100%;
+  height: 176rpx;
+  /* Grid 布局：三列等分，确保标题居中 */
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  padding: 0 32rpx;
+  background-color: #2C3A4A;
+  z-index: 100;
+  box-sizing: border-box;
+}
+
+.header-left {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  justify-self: start;
+}
+
+.back-icon {
+  width: 18rpx;
+  height: 36rpx;
+}
+
+.header-center {
+  /* Grid 自动放置到中间列，在列内居中 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-self: center;
+}
+
+.header-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.header-right {
+  width: auto;
+  min-width: 160rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  justify-self: end;
+}
+
+.delete-text {
+  font-size: 32rpx;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+
+.delete-text:active {
+  opacity: 0.7;
+}
+
+.delete-icon {
+  width: 48rpx;
+  height: 48rpx;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.delete-icon:active {
+  opacity: 0.7;
+}
+
+.add-icon {
+  width: 48rpx;
+  height: 48rpx;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.add-icon:active {
+  opacity: 0.7;
+}
+
+.schedule-link {
+  font-size: 32rpx;
+  color: #A2E525;
+  cursor: pointer;
+}
+
+.schedule-link.active {
+  color: #A2E525;
+  font-weight: 600;
+}
+
+.schedule-link:active {
+  opacity: 0.7;
+}
+
+.content-wrapper {
+  padding-top: 240rpx;
+  padding-bottom: 40rpx;
+  min-height: calc(100vh - 316rpx);
+  box-sizing: border-box;
+}
+
+/* Tips 标签页样式 */
+.tips-content {
+  width: 100%;
+  height: calc(100vh - 316rpx);
+  display: flex;
+  flex-direction: column;
+}
+
+.tips-scroll-view {
+  width: 100%;
+  height: 100%;
+  padding: 40rpx 46rpx; /* 左右padding改为46rpx，与设计稿一致 */
+  box-sizing: border-box;
+}
+
+.form-item-wrapper {
+  position: relative;
+}
+
+.form-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32rpx 0;
+  border-bottom: 2rpx solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+/* 长方形输入框样式 */
+.form-item-rect {
+  width: 100%;
+  height: 108rpx;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 24rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 32rpx;
+  margin-bottom: 32rpx;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* 当选择器展开时，移除间隙 */
+.form-item-wrapper.picker-expanded .form-item-rect {
+  margin-bottom: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.form-item-rect:active {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.form-input-rect {
+  flex: 1;
+  font-size: 36rpx;
+  color: #FFFFFF !important;
+  background: transparent;
+}
+
+.form-input-rect::placeholder {
+  color: #FFFFFF;
+  opacity: 1;
+}
+
+.form-icon-left {
+  width: 48rpx;
+  height: 48.12rpx;
+  margin-right: 16rpx;
+}
+
+.form-label-rect {
+  font-size: 36rpx;
+  color: #FFFFFF;
+  margin-right: auto;
+}
+
+.form-value-text-rect {
+  font-size: 36rpx;
+  color: #8E8E93;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.form-value-text-rect.selected {
+  color: #A2E525;
+}
+
+.form-label {
+  font-size: 32rpx;
+  color: #FFFFFF;
+}
+
+.form-value {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.form-icon {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+.form-input {
+  flex: 1;
+  text-align: right;
+  font-size: 32rpx;
+  color: #FFFFFF;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.form-value-text {
+  font-size: 32rpx;
+  color: #8E8E93;
+}
+
+.form-value-text.selected {
+  color: #A2E525;
+}
+
+/* 内联日期选择器 */
+.inline-date-picker {
+  max-height: 0;
+  overflow: hidden;
+}
+
+.inline-date-picker.expanded {
+  max-height: 800rpx;
+  padding-bottom: 32rpx;
+  overflow-y: visible;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 24rpx;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  padding-top: 16rpx;
+  margin-bottom: 32rpx;
+}
+
+/* 年份和月份显示行 */
+.calendar-year-month-header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.calendar-year-month-left {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.calendar-year-month-text {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.calendar-year-select-btn {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.calendar-year-arrow {
+  font-size: 40rpx;
+  color: #FFFFFF;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* 内联月份切换导航 */
+.calendar-month-nav-inline {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+/* 月份切换导航（保留以防其他地方使用） */
+.calendar-month-nav {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20rpx 0;
+}
+
+.calendar-month-nav-btn {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16rpx;
+  background-color: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+}
+
+.calendar-nav-arrow {
+  font-size: 48rpx;
+  color: #FFFFFF;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* 星期标题行 */
+.calendar-weekday-headers {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 20rpx;
+  gap: 8rpx;
+}
+
+.calendar-weekday-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16rpx 0;
+}
+
+.calendar-weekday-text {
+  font-size: 28rpx;
+  color: #8E8E93;
+  font-weight: 500;
+}
+
+/* 日期网格 */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8rpx;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16rpx;
+  position: relative;
+  min-height: 80rpx;
+  border: 4rpx solid transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.calendar-day.empty {
+  background-color: transparent;
+  cursor: default;
+  pointer-events: none;
+}
+
+.calendar-day.today {
+  border: 4rpx solid rgba(82, 196, 26, 0.5);
+}
+
+.calendar-day.selected {
+  border: 4rpx solid #52C41A;
+  background-color: rgba(82, 196, 26, 0.2);
+}
+
+.calendar-day.selected.today {
+  border: 4rpx solid #52C41A;
+  background-color: rgba(82, 196, 26, 0.4);
+}
+
+.calendar-day:active:not(.empty) {
+  transform: scale(0.95);
+}
+
+.calendar-day-number {
+  font-size: 32rpx;
+  color: #FFFFFF;
+  font-weight: 500;
+}
+
+/* 内联时间选择器 */
+.inline-time-picker {
+  max-height: 0;
+  overflow: hidden;
+}
+
+.inline-time-picker.expanded {
+  max-height: 700rpx;
+  padding-bottom: 32rpx;
+  overflow-y: visible;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 24rpx;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  padding-top: 16rpx;
+  margin-bottom: 32rpx;
+}
+
+.time-picker-wrapper {
+  width: 100%;
+  position: relative;
+  padding: 16rpx;
+  box-sizing: border-box;
+}
+
+.time-picker-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.time-picker-container::before {
+  display: none;
+}
+
+.time-picker-view {
+  width: 100%;
+  height: 240rpx;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.time-picker-column {
+  flex: 1;
+  position: relative;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.time-picker-item {
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 80rpx;
+}
+
+.time-picker-text {
+  font-size: 36rpx;
+  color: rgba(255, 255, 255, 0.9);
+  transition: all 0.2s;
+}
+
+/* 固定底部按钮 */
+.sure-button-fixed {
+  position: fixed;
+  bottom: 72rpx; /* 与底部导航栏位置一致 */
+  left: 32rpx;
+  right: 32rpx;
+  height: 112rpx;
+  background-color: #A2E525;
+  border-radius: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  z-index: 99;
+}
+
+.sure-button-fixed:active {
+  opacity: 0.8;
+}
+
+.sure-button-text {
+  font-size: 40rpx;
+  color: #000;
+  font-weight: 700;
+}
+
+/* 我的日程标签页样式 */
+.schedule-content {
+  width: 100%;
+  height: calc(100vh - 316rpx);
+}
+
+.schedule-list {
+  width: 100%;
+  height: 100%;
+  padding: 32rpx;
+}
+
+.schedule-card {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.schedule-card:active {
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+
+.schedule-card-title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin-bottom: 16rpx;
+}
+
+.schedule-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 32rpx;
+}
+
+.schedule-card-date {
+  font-size: 36rpx;
+  color: #FFFFFF;
+  opacity: 0.7;
+}
+
+.schedule-card-time {
+  font-size: 36rpx;
+  color: #FFFFFF;
+  opacity: 0.7;
+}
+
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 120rpx 40rpx;
+  min-height: 400rpx;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #8E8E93;
+  text-align: center;
+}
+
+/* 年份选择器弹窗 */
+.year-picker-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.year-picker-content {
+  width: 80%;
+  max-width: 800rpx;
+  background-color: #2C3A4A;
+  border-radius: 32rpx;
+  padding: 40rpx;
+  box-sizing: border-box;
+}
+
+.year-picker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+.year-picker-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.year-picker-close {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+
+.year-picker-container {
+  height: 400rpx;
+  margin-bottom: 40rpx;
+}
+
+.year-picker-view {
+  width: 100%;
+  height: 400rpx;
+}
+
+.year-picker-item {
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 80rpx;
+}
+
+.year-picker-text {
+  font-size: 36rpx;
+  color: #8E8E93;
+  transition: all 0.2s;
+}
+
+.year-picker-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.year-picker-confirm-btn {
+  width: 100%;
+  height: 88rpx;
+  background-color: #A2E525;
+  border-radius: 44rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  color: #000;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.year-picker-confirm-btn:active {
+  opacity: 0.8;
+}

@@ -1,0 +1,79 @@
+<view class="container">
+  <view class="header">
+    <view class="back-btn" bindtap="goBack">
+      <image class="back-icon" src="../../assets/icons/Vector.svg" mode="aspectFit"></image>
+    </view>
+      <view class="header-title">
+      <text class="page-title">{{detailsLabel}}</text>
+      <text class="page-subtitle" ty:if="{{record}}">{{record.title || quickStartLabel}}</text>
+    </view>
+  </view>
+
+  <!-- 空状态提示 -->
+  <view class="empty-placeholder" ty:if="{{showEmptyState}}">
+    <text class="empty-text">{{noDataLabel}}</text>
+  </view>
+
+  <view class="content" ty:if="{{record && !showEmptyState}}">
+    <!-- 顶部卡片（与 history 页面一致） -->
+    <view class="top-card">
+      <view class="card-header">
+        <view class="duration-group">
+          <text class="duration-val">{{record.title || quickStartLabel}}</text>
+        </view>
+        <text class="record-date">{{record.date}}</text>
+      </view>
+      <view class="card-stats">
+        <view class="stat-item">
+          <text class="stat-label">{{hrBpmLabel}}</text>
+          <text class="stat-val">{{record.heartRate || '2'}}</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-label">{{inclineLabel}}</text>
+          <text class="stat-val">{{record.incline || '52'}}</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-label">{{distanceKmLabel}}</text>
+          <text class="stat-val">{{record.distance || '50.1'}}</text>
+        </view>
+      </view>
+    
+    </view>
+
+    <!-- Speed、Calories 卡片 -->
+    <view class="middle-cards-row">
+      <!-- Speed 卡片（左侧） -->
+      <view class="speed-card">
+        <text class="card-label">{{speedKmhLabel}}</text>
+        <view class="card-icon green">
+          <image src="../../assets/icons/Vector 1.svg" mode="aspectFit"></image>
+        </view>
+        <view class="card-value-wrapper">
+          <text class="card-value">{{record.speed || '19'}}</text>
+        </view>
+      </view>
+      
+      <!-- Calories 卡片（右侧） -->
+      <view class="info-card">
+        <text class="card-label">{{caloriesLabel}}</text>
+        <view class="card-icon orange">
+          <image src="../../assets/icons/Vector 2.svg" mode="aspectFit"></image>
+        </view>
+        <view class="card-value-wrapper">
+          <text class="card-values">{{record.calories}}kcal</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部卡片 -->
+    <view class="bottom-cards">
+      <view class="bottom-card-item">
+        <text class="bottom-card-label">{{workoutTimeLabel}}</text>
+        <text class="bottom-card-value">{{record.duration || '00:20:30'}}</text>
+      </view>
+    </view>
+  </view>
+</view>
+

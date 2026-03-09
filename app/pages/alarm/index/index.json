@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "Front page",
+  "navigationStyle": "custom",
+  "backgroundColor": "#2C3A4A",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "bottom-nav": "/components/bottom-nav/bottom-nav"
+  }
+}
