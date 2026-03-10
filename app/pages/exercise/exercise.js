@@ -17,8 +17,7 @@ const DP = {
   workoutTime: 108,
   power: 109, // 功率
   heartRate: 110,
-  resistance: 107, // 阻力
-  incline: 114 // 扬升/坡度
+  resistance: 107 // 阻力
 };
 
 const SPORT_STATE_DP_VALUE_NUMBER = {
@@ -48,7 +47,6 @@ Page({
     watt: 0,
     speed: 0.5,
     load: 1,
-    incline: 0,
     gaugeProgressStyle: '',
     knobAngle: 220, // Start angle
     // 目标模式相关
@@ -66,9 +64,6 @@ Page({
     // 速度限制（从dp点获取）
     maxSpeed: 999999, // 默认值，将从dp点115获取
     minSpeed: 0, // 默认值，将从dp点116获取
-    // 扬升限制（从dp点获取）
-    maxAscension: 15, // 默认值，将从dp点117获取
-    minAscension: 0, // 默认值，将从dp点118获取
     // 国际化文本（初始化为空，在 onLoad 中根据系统语言设置）
     speedKmhLabel: '',
     caloriesKcalLabel: '',
@@ -78,7 +73,6 @@ Page({
     powerWLabel: '',
     distanceKmLabel: '',
     loadLabel: '',
-    inclineLabel: '',
     startHoldStopLabel: '',
     // 按钮点击状态
     isDecreaseSpeedPressed: false,
@@ -103,8 +97,6 @@ Page({
   longPressTriggered: false,
   maxSpeedDuring: null,
   minSpeedDuring: null,
-  maxInclineDuring: null,
-  minInclineDuring: null,
   endingWorkout: false,
   sportStateDpMode: null,
   sportStateValueMap: { ...SPORT_STATE_DP_VALUE_STRING, END: SPORT_STATE_DP_VALUE_STRING.STOP },
@@ -113,9 +105,7 @@ Page({
   pendingSpeedValue: null,
   speedUnlockTimer: null,
   lastDeviceSpeedValue: null,
-  inclineUiLocked: false,
-  pendingInclineValue: null,
-  inclineUnlockTimer: null,
+  hasResistanceDpReported: false,
   
 
   /**
@@ -132,20 +122,10 @@ Page({
   },
 
   getGaugeDpId() {
-    return this.gaugeDpId || DP.resistance;
+    return DP.resistance;
   },
 
   getGaugeLimits() {
-    if (this.getGaugeDpId() === DP.incline) {
-      const maxValueRaw = Number(this.data.maxAscension);
-      const minValueRaw = Number(this.data.minAscension);
-      const maxValue = Number.isFinite(maxValueRaw) ? maxValueRaw : 15;
-      const minValue = Number.isFinite(minValueRaw) ? minValueRaw : 0;
-      return {
-        min: Math.min(minValue, maxValue),
-        max: Math.max(minValue, maxValue)
-      };
-    }
     return {
       min: RESISTANCE_LIMIT_MIN,
       max: RESISTANCE_LIMIT_MAX
@@ -155,8 +135,6 @@ Page({
   resetWorkoutStats() {
     this.maxSpeedDuring = null;
     this.minSpeedDuring = null;
-    this.maxInclineDuring = null;
-    this.minInclineDuring = null;
     this.endingWorkout = false;
     this.isStopping = false;
   },
@@ -173,44 +151,17 @@ Page({
     }
   },
 
-  trackIncline(value) {
-    if (!this.isRunning) return;
-    const inclineValue = typeof value === 'number' ? value : parseFloat(value);
-    if (!Number.isFinite(inclineValue)) return;
-    if (this.maxInclineDuring === null || inclineValue > this.maxInclineDuring) {
-      this.maxInclineDuring = inclineValue;
-    }
-    if (this.minInclineDuring === null || inclineValue < this.minInclineDuring) {
-      this.minInclineDuring = inclineValue;
-    }
-  },
-
-  getInclineValue() {
-    const inclineRaw = this.data.incline !== undefined ? this.data.incline : this.data.load;
-    const inclineValue = typeof inclineRaw === 'number' ? inclineRaw : parseFloat(inclineRaw);
-    return Number.isFinite(inclineValue) ? inclineValue : 0;
-  },
-
   getWorkoutSummaryForUpload() {
     const speedValue = parseFloat(this.data.speed) || 0;
-    const inclineValue = this.getInclineValue();
     const maxSpeed = this.maxSpeedDuring ?? (speedValue > 0 ? speedValue : 0);
     const minSpeed = this.minSpeedDuring ?? (speedValue > 0 ? speedValue : 0);
-    const maxIncline = this.maxInclineDuring ?? inclineValue;
-    const minIncline = this.minInclineDuring ?? inclineValue;
-    const gaugeType = this.getGaugeDpId() === DP.incline ? 'incline' : 'resistance';
     return {
       speed: speedValue,
       maxSpeed,
       minSpeed,
-      incline: inclineValue,
-      maxIncline,
-      minIncline,
-      gaugeType,
+      gaugeType: 'resistance',
       speedLimitMax: this.data.maxSpeed,
-      speedLimitMin: this.data.minSpeed,
-      inclineLimitMax: this.data.maxAscension,
-      inclineLimitMin: this.data.minAscension
+      speedLimitMin: this.data.minSpeed
     };
   },
 
@@ -417,7 +368,6 @@ Page({
       powerWLabel: currentI18n.t('power_w'),
       distanceKmLabel: currentI18n.t('distance_km'),
       loadLabel: currentI18n.t('load'),
-      inclineLabel: currentI18n.t('incline'),
       startHoldStopLabel: currentI18n.t('start_hold_stop')
     });
     
@@ -669,12 +619,10 @@ dpID.forEach(element => {
     const loadValue = Number.isFinite(loadValueRaw)
       ? Math.min(Math.max(loadValueRaw, RESISTANCE_LIMIT_MIN), RESISTANCE_LIMIT_MAX)
       : RESISTANCE_LIMIT_MIN;
-    if (!this.gaugeDpId || this.gaugeDpId === DP.resistance) {
-      this.gaugeDpId = DP.resistance;
-      this.setData({
-        load: loadValue
-      });
-    }
+    this.hasResistanceDpReported = true;
+    this.gaugeDpId = DP.resistance;
+    this.dpMaxResistance = loadValue;
+    this.updateGauge(loadValue);
   }
   // 最大速度限制 (dp点115)
   if(element.code == 115) {
@@ -691,59 +639,6 @@ dpID.forEach(element => {
     this.setData({
       minSpeed: Number.isFinite(minSpeedValue) ? (minSpeedValue / 10) : this.data.minSpeed
     });
-  }
-  // 最大扬升限制 (dp点117)
-  if(element.code == 117) {
-    console.log('最大扬升限制:', element.value);
-    this.setData({
-      maxAscension: element.value
-    });
-  }
-  // 最小扬升限制 (dp点118)
-  if(element.code == 118) {
-    console.log('最小扬升限制:', element.value);
-    this.setData({
-      minAscension: element.value
-    });
-  }
-  //扬升 - DP 114
-  if(element.code == DP.incline) {
-    console.log('扬升:', element.value);
-    const inclineValue = Number(element.value);
-    if (!Number.isFinite(inclineValue)) {
-      return;
-    }
-    
-    const pending = this.pendingInclineValue;
-    const pendingNum = pending === null || pending === undefined ? null : Number(pending);
-    const tolerance = 0.5; // 坡度容差
-    
-    if (this.inclineUiLocked && pendingNum !== null) {
-      // 在锁定期内，只接受与pendingInclineValue匹配的值
-      if (Math.abs(inclineValue - pendingNum) <= tolerance) {
-        this.unlockInclineUi();
-        this.gaugeDpId = DP.incline;
-        this.setData({
-          incline: inclineValue,
-          load: inclineValue
-        });
-        // 同步更新视觉位置，确保显示值与滑块位置一致
-        this.updateGauge(inclineValue);
-        this.trackIncline(inclineValue);
-      }
-      // 不匹配的值完全忽略，不更新UI
-      return;
-    }
-    
-    // 未锁定状态，正常更新
-    this.gaugeDpId = DP.incline;
-    this.setData({
-      incline: inclineValue,
-      load: inclineValue
-    });
-    // 同步更新视觉位置，确保显示值与滑块位置一致
-    this.updateGauge(inclineValue);
-    this.trackIncline(inclineValue);
   }
   // DP 113 历史记录监听已移除 - 不再使用云端同步
 });
@@ -883,7 +778,7 @@ onDpDataChange(_onDpDataChange);
                 success: () => {
                   console.log('开始运动命令已发送');
                   this.setData({ isPaused: false });
-                  if (wasPaused) {
+                  if (!wasRunning || wasPaused) {
                     ty.showToast({ title: this.getI18n().t('resumed'), icon: 'none' });
                   }
                 }
@@ -903,7 +798,7 @@ onDpDataChange(_onDpDataChange);
                 success: () => {
                   console.log('开始运动命令已发送');
                   this.setData({ isPaused: false });
-                  if (wasPaused) {
+                  if (!wasRunning || wasPaused) {
                     ty.showToast({ title: this.getI18n().t('resumed'), icon: 'none' });
                   }
                 }
@@ -1135,9 +1030,6 @@ onDpDataChange(_onDpDataChange);
           avgResistance: String(avgResistance ?? 0),
           maxSpeed: String(exerciseRecord.maxSpeed ?? 0),
           minSpeed: String(exerciseRecord.minSpeed ?? 0),
-          incline: String(exerciseRecord.incline ?? 0),
-          maxIncline: String(exerciseRecord.maxIncline ?? 0),
-          minIncline: String(exerciseRecord.minIncline ?? 0),
           dateCongrats: String(exerciseRecord.dateCongrats || '')
         });
         
@@ -1240,14 +1132,9 @@ onDpDataChange(_onDpDataChange);
       hrBpm: heartRate,
       heartRate: heartRate,
       load: this.data.load || 0,
-      incline: summary.incline,
-      maxIncline: summary.maxIncline,
-      minIncline: summary.minIncline,
       gaugeType: summary.gaugeType,
       speedLimitMax: summary.speedLimitMax,
       speedLimitMin: summary.speedLimitMin,
-      inclineLimitMax: summary.inclineLimitMax,
-      inclineLimitMin: summary.inclineLimitMin,
       maxResistance: finalMaxResistance,
       minResistance: this.minResistance || 0,
       avgResistance: parseFloat(avgResistance) || 0,
@@ -1357,7 +1244,6 @@ throttle(func, delay) {
       const finalLoad = this.tempLoad;
       // 立即更新UI并锁定，避免设备上报旧值时跳回旧值
       this.updateGauge(finalLoad);
-      this.lockInclineUi(finalLoad);
       
       // 设备命令发送逻辑不变
       this.queuePublishDps(
@@ -1409,34 +1295,6 @@ throttle(func, delay) {
     if (this.speedUnlockTimer) {
       clearTimeout(this.speedUnlockTimer);
       this.speedUnlockTimer = null;
-    }
-  },
-
-  lockInclineUi(targetIncline) {
-    this.inclineUiLocked = true;
-    const normalized = typeof targetIncline === 'number' ? targetIncline : parseFloat(targetIncline);
-    this.pendingInclineValue = Number.isFinite(normalized) ? Number(normalized) : null;
-    if (this.inclineUnlockTimer) {
-      clearTimeout(this.inclineUnlockTimer);
-      this.inclineUnlockTimer = null;
-    }
-    this.inclineUnlockTimer = setTimeout(() => {
-      const tolerance = 0.5; // 坡度容差
-      if (this.pendingInclineValue !== null) {
-        // 锁定期过后，如果设备还没上报匹配的值，解锁
-        this.inclineUiLocked = false;
-        this.pendingInclineValue = null;
-      }
-      this.inclineUnlockTimer = null;
-    }, 2000);
-  },
-
-  unlockInclineUi() {
-    this.inclineUiLocked = false;
-    this.pendingInclineValue = null;
-    if (this.inclineUnlockTimer) {
-      clearTimeout(this.inclineUnlockTimer);
-      this.inclineUnlockTimer = null;
     }
   },
 
@@ -1529,9 +1387,6 @@ throttle(func, delay) {
     const startAngle = 220;
     const knobAngle = startAngle + progressAngle;
 
-    if (this.getGaugeDpId() === DP.incline) {
-      this.trackIncline(currentValue);
-    }
     if (this.maxResistance === null || currentValue > this.maxResistance) {
       this.maxResistance = currentValue;
     }

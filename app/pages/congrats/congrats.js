@@ -42,7 +42,7 @@ Page({
       workoutTimeLabel: currentI18n.t('workout_time'),
       hrBpmLabel: currentI18n.t('hr_bpm'),
       speedLabel: currentI18n.t('speed_kmh_label'),
-      powerLabel: 'Power (W)',
+      powerLabel: currentI18n.t('power_w'),
       distanceLabel: currentI18n.t('distance_km_label'),
       date: todayStr
     });

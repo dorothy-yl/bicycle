@@ -1,6 +1,7 @@
 {
   "navigationStyle": "custom",
   "navigationBarTextStyle": "white",
+  "disableSwipeBack": true,
   "disableScroll": true,
   "usingComponents": {
   }

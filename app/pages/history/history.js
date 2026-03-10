@@ -330,6 +330,7 @@ Page({
       const distanceValue = toFixedString(toNumber(distanceRaw, NaN), 2, '0.00');
       const heartRateValue = Math.round(toNumber(record.heartRate, 0)).toString();
       const rpmValue = Math.round(toNumber(record.rpm, toNumber(record.heartRate, 0))).toString();
+      const wattValue = Math.round(toNumber(record.watt, toNumber(record.power, 0))).toString();
       const maxSpeedValue = toFixedString(toNumber(record.maxSpeed, NaN), 1, '0.0');
       const minSpeedValue = toFixedString(toNumber(record.minSpeed, NaN), 1, '0.0');
       const inclineValue = toFixedString(toNumber(record.incline, NaN), 1, '0.0');
@@ -346,6 +347,7 @@ Page({
         distance: distanceValue,
         heartRate: heartRateValue,
         rpm: rpmValue,
+        watt: wattValue,
         maxSpeed: maxSpeedValue,
         minSpeed: minSpeedValue,
         incline: inclineValue,
@@ -597,7 +599,7 @@ Page({
         id: id.toString(),
         duration: fullRecord.duration ? fullRecord.duration.toString() : '0',
         date: fullRecord.dateFormatted || fullRecord.date || '',
-        speed: fullRecord.speedKmh ? fullRecord.speedKmh.toString() : (fullRecord.speed ? fullRecord.speed.toString() : '0'),
+        speed: fullRecord.speed ? fullRecord.speed.toString() : (fullRecord.speedKmh ? fullRecord.speedKmh.toString() : '0'),
         calories: fullRecord.calories ? fullRecord.calories.toString() : '0',
         distance: fullRecord.distance ? fullRecord.distance.toFixed(1) : '0.0',
         maxResistance: fullRecord.maxResistance ? fullRecord.maxResistance.toString() : '0',
