@@ -97,18 +97,33 @@ Page({
     return dateString;
   },
 
+  // 与 quick start/congrats 一致：优先 speed，其次 speedKmh，不做额外计算
+  resolveDisplaySpeed(dataSource) {
+    if (!dataSource) return '0.0';
+    const hasValue = (value) => value !== undefined && value !== null && value !== '';
+    const toFixedSpeed = (value) => {
+      const num = typeof value === 'number' ? value : parseFloat(value);
+      return Number.isFinite(num) ? num.toFixed(1) : null;
+    };
+
+    if (hasValue(dataSource.speed)) {
+      const speed = toFixedSpeed(dataSource.speed);
+      if (speed !== null) return speed;
+    }
+    if (hasValue(dataSource.speedKmh)) {
+      const speedKmh = toFixedSpeed(dataSource.speedKmh);
+      if (speedKmh !== null) return speedKmh;
+    }
+    return '0.0';
+  },
+
   // 从URL参数构建记录
   buildRecordFromOptions(options) {
     const durationSeconds = parseInt(options.duration) || 0;
     const rawDate = options.date || options.dateCongrats || this.formatDate(new Date());
     const formattedDate = this.formatDateString(rawDate);
 
-    let speedValue = '0';
-    if (options.speed !== undefined && options.speed !== null && options.speed !== '') {
-      speedValue = parseFloat(options.speed).toFixed(1);
-    } else if (options.speedKmh !== undefined && options.speedKmh !== null && options.speedKmh !== '') {
-      speedValue = parseFloat(options.speedKmh).toFixed(1);
-    }
+    const speedValue = this.resolveDisplaySpeed(options);
 
     const titleValue = options.title || options.pageTitle || this.getI18n().t('quick_start');
     const isGoalMode = options.isGoalMode === 'true' || options.isGoalMode === true;
@@ -165,19 +180,10 @@ Page({
         ? normalized.load.toString()
         : (normalized.avgResistance ? Math.round(normalized.avgResistance).toString() : '0');
     }
-    if (options.speed !== undefined && options.speed !== null && options.speed !== '') {
-      normalized.speed = parseFloat(options.speed).toFixed(1);
-    } else if (options.speedKmh !== undefined && options.speedKmh !== null && options.speedKmh !== '') {
-      normalized.speed = parseFloat(options.speedKmh).toFixed(1);
-    } else if (!normalized.speed) {
-      if (normalized.speedKmh !== undefined) {
-        normalized.speed = parseFloat(normalized.speedKmh).toFixed(0);
-      } else if (normalized.speed !== undefined) {
-        normalized.speed = parseFloat(normalized.speed).toFixed(0);
-      } else {
-        normalized.speed = '0';
-      }
-    }
+    const speedFromOptions = this.resolveDisplaySpeed(options);
+    normalized.speed = speedFromOptions !== '0.0'
+      ? speedFromOptions
+      : this.resolveDisplaySpeed(normalized);
     if (!normalized.title) {
       normalized.title = normalized.pageTitle || (normalized.isGoalMode === true
         ? this.getI18n().t('target_pattern')

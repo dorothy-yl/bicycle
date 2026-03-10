@@ -11,16 +11,16 @@ Page({
     duration: '00:01:36',
     hrBpm: 0,
     avgSpeed: '1.3',
-    incline: 9,
+    watt: 0,
     distance: '0.7',
     // 国际化文本（初始化为空，在 onLoad 中根据系统语言设置）
     pageTitle: '',
     kcalUnit: '',
-    caloriesLabel: '',
+    burnCaloriesLabel: '',
     workoutTimeLabel: '',
     hrBpmLabel: '',
     speedLabel: '',
-    inclineLabel: '',
+    powerLabel: '',
     distanceLabel: ''
   },
   onLoad(options) {
@@ -38,11 +38,11 @@ Page({
     this.setData({
       pageTitle: currentI18n.t('congratulations'),
       kcalUnit: currentI18n.t('kcal'),
-      caloriesLabel: currentI18n.t('calories'),
+      burnCaloriesLabel: 'Burn Calories',
       workoutTimeLabel: currentI18n.t('workout_time'),
       hrBpmLabel: currentI18n.t('hr_bpm'),
       speedLabel: currentI18n.t('speed_kmh_label'),
-      inclineLabel: currentI18n.t('incline'),
+      powerLabel: 'Power (W)',
       distanceLabel: currentI18n.t('distance_km_label'),
       date: todayStr
     });
@@ -130,7 +130,7 @@ Page({
         avgSpeed = (parseFloat(distance) / durationInHours).toFixed(1);
       }
       
-      const incline = exerciseData.incline != null && !isNaN(exerciseData.incline) ? exerciseData.incline : 0;
+      const watt = exerciseData.watt != null && !isNaN(exerciseData.watt) ? Math.round(exerciseData.watt) : 0;
       const date = exerciseData.dateCongrats || exerciseData.dateFormatted || todayStr;
       
       this.setData({
@@ -140,7 +140,7 @@ Page({
         duration: durationFormatted,
         hrBpm: hrBpm,
         avgSpeed: avgSpeed,
-        incline: incline,
+        watt: watt,
         distance: distance
       });
     }

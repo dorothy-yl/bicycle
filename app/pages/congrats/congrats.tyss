@@ -39,6 +39,7 @@
 .header-row {
   display: flex;
   align-items: center;
+  width: 100%;
   margin-top: 100rpx;
   margin-bottom: 30rpx;
 }
@@ -59,10 +60,12 @@
 .page-title {
   color: #ffffff;
   font-size: 48rpx;
+  flex: 1;
   margin-left: 20rpx;
   font-weight: normal;
   font-family: sans-serif;
   line-height: 1;
+  text-align: right;
 }
 
 .top-card {
