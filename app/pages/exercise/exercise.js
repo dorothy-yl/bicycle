@@ -11,9 +11,11 @@ function formatDpState(dpState) {
 const DP = {
   sportState: 106, // 运动状态（枚举）
   speed: 112,
+  rpm: 111, // 踏频
   distance: 103,
   calories: 105,
   workoutTime: 108,
+  power: 109, // 功率
   heartRate: 110,
   resistance: 107, // 阻力
   incline: 114 // 扬升/坡度
@@ -31,10 +33,14 @@ const SPORT_STATE_DP_VALUE_STRING = {
   STOP: 'Stop'
 };
 
+const RESISTANCE_LIMIT_MIN = 0;
+const RESISTANCE_LIMIT_MAX = 32;
+
 Page({
   data: {
     isPaused: false,
     elapsedTime: 0, 
+    rpm: 0,
     heartRate: 0,
     distance: 0,
     formattedTime: '00:00:00',
@@ -127,6 +133,23 @@ Page({
 
   getGaugeDpId() {
     return this.gaugeDpId || DP.resistance;
+  },
+
+  getGaugeLimits() {
+    if (this.getGaugeDpId() === DP.incline) {
+      const maxValueRaw = Number(this.data.maxAscension);
+      const minValueRaw = Number(this.data.minAscension);
+      const maxValue = Number.isFinite(maxValueRaw) ? maxValueRaw : 15;
+      const minValue = Number.isFinite(minValueRaw) ? minValueRaw : 0;
+      return {
+        min: Math.min(minValue, maxValue),
+        max: Math.max(minValue, maxValue)
+      };
+    }
+    return {
+      min: RESISTANCE_LIMIT_MIN,
+      max: RESISTANCE_LIMIT_MAX
+    };
   },
 
   resetWorkoutStats() {
@@ -580,6 +603,20 @@ dpID.forEach(element => {
       heartRate: element.value
     });
   }
+  // 功率 - DP 109
+  if (element.code == DP.power) {
+    const powerValue = Number(element.value);
+    this.setData({
+      watt: Number.isFinite(powerValue) ? Math.round(powerValue) : 0
+    });
+  }
+  // 踏频 - DP 111
+  if (element.code == DP.rpm) {
+    const rpmValue = Number(element.value);
+    this.setData({
+      rpm: Number.isFinite(rpmValue) ? Math.round(rpmValue) : 0
+    });
+  }
   // 距离 - DP 103 (里程)
   if (element.code == DP.distance) {
     const rawDistance = element.value / 100;
@@ -628,7 +665,10 @@ dpID.forEach(element => {
   //阻力 - DP 107
   if(element.code == DP.resistance) {
     console.log('阻力:', element.value);
-    const loadValue = element.value;
+    const loadValueRaw = Number(element.value);
+    const loadValue = Number.isFinite(loadValueRaw)
+      ? Math.min(Math.max(loadValueRaw, RESISTANCE_LIMIT_MIN), RESISTANCE_LIMIT_MAX)
+      : RESISTANCE_LIMIT_MIN;
     if (!this.gaugeDpId || this.gaugeDpId === DP.resistance) {
       this.gaugeDpId = DP.resistance;
       this.setData({
@@ -1086,6 +1126,7 @@ onDpDataChange(_onDpDataChange);
           speedKmh: speedKmh,
           calories: String(exerciseRecord.calories ?? 0),
           distance: String(exerciseRecord.distance ?? 0),
+          rpm: String(exerciseRecord.rpm ?? 0),
           hrBpm: String(exerciseRecord.hrBpm ?? exerciseRecord.heartRate ?? 0),
           watt: String(exerciseRecord.watt ?? 0),
           heartRate: String(exerciseRecord.heartRate ?? 0),
@@ -1194,6 +1235,7 @@ onDpDataChange(_onDpDataChange);
       minSpeed: summary.minSpeed,
       calories: parseFloat(this.data.calories) || 0,
       distance: parseFloat(this.data.distance) || 0,
+      rpm: parseFloat(this.data.rpm) || 0,
       watt: this.data.watt || 0,
       hrBpm: heartRate,
       heartRate: heartRate,
@@ -1252,13 +1294,13 @@ throttle(func, delay) {
 
   // 仅更新视觉位置（不更新load数据和发送命令）
   updateGaugeVisual(value) {
-    // 使用从dp点获取的最大/最小扬升限制
-    const maxAscension = this.data.maxAscension || 15;
-    const minAscension = this.data.minAscension || 0;
-    // 应用最小和最大扬升限制
-    const currentValue = Math.min(Math.max(value, minAscension), maxAscension);
+    const gaugeLimits = this.getGaugeLimits();
+    const maxValue = gaugeLimits.max;
+    const minValue = gaugeLimits.min;
+    const currentValue = Math.min(Math.max(value, minValue), maxValue);
     const maxAngle = 270;
-    const progressAngle = (currentValue / maxAscension) * maxAngle;
+    const safeMax = maxValue <= 0 ? 1 : maxValue;
+    const progressAngle = (currentValue / safeMax) * maxAngle;
     const startAngle = 220;
     const knobAngle = startAngle + progressAngle;
 
@@ -1291,13 +1333,11 @@ throttle(func, delay) {
     if (adjustedAngle > endAngle) adjustedAngle = endAngle;
   
     const progress = (adjustedAngle - startAngle) / maxSweep;
-    // 使用从dp点获取的最大/最小扬升限制
-    const maxAscension = this.data.maxAscension || 15;
-    const minAscension = this.data.minAscension || 0;
-    const maxLoad = maxAscension; // 使用最大扬升作为上限
+    const gaugeLimits = this.getGaugeLimits();
+    const maxLoad = gaugeLimits.max;
+    const minLoad = gaugeLimits.min;
     const rawLoad = Math.floor(progress * maxLoad);
-    // 应用最小和最大扬升限制
-    const newLoad = Math.min(Math.max(rawLoad, minAscension), maxAscension);
+    const newLoad = Math.min(Math.max(rawLoad, minLoad), maxLoad);
   
     this.tempLoad = newLoad;
   
@@ -1479,13 +1519,13 @@ throttle(func, delay) {
   },
 
   updateGauge(value) {
-    // 使用从dp点获取的最大/最小扬升限制
-    const maxAscension = this.data.maxAscension || 15;
-    const minAscension = this.data.minAscension || 0;
-    // 应用最小和最大扬升限制
-    const currentValue = Math.min(Math.max(value, minAscension), maxAscension);
+    const gaugeLimits = this.getGaugeLimits();
+    const maxValue = gaugeLimits.max;
+    const minValue = gaugeLimits.min;
+    const currentValue = Math.min(Math.max(value, minValue), maxValue);
     const maxAngle = 270;
-    const progressAngle = (currentValue / maxAscension) * maxAngle;
+    const safeMax = maxValue <= 0 ? 1 : maxValue;
+    const progressAngle = (currentValue / safeMax) * maxAngle;
     const startAngle = 220;
     const knobAngle = startAngle + progressAngle;
 

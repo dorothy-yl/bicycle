@@ -145,7 +145,9 @@ Page({
       });
     }
   },
-  goBack() {
-    ty.navigateBack();
+  onBackTap() {
+    ty.redirectTo({
+      url: '/pages/index/index'
+    });
   }
 });

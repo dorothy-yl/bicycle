@@ -36,13 +36,33 @@
   overflow: hidden;
 }
 
+.header-row {
+  display: flex;
+  align-items: center;
+  margin-top: 100rpx;
+  margin-bottom: 30rpx;
+}
+
+.back-btn {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-icon {
+  width: 24rpx;
+  height: 40rpx;
+}
+
 .page-title {
   color: #ffffff;
   font-size: 48rpx;
-  margin-top: 100rpx;
-  margin-bottom: 30rpx;
+  margin-left: 20rpx;
   font-weight: normal;
   font-family: sans-serif;
+  line-height: 1;
 }
 
 .top-card {

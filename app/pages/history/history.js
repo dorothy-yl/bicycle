@@ -329,6 +329,7 @@ Page({
         : (record.distanceKm !== undefined && record.distanceKm !== null ? record.distanceKm : null);
       const distanceValue = toFixedString(toNumber(distanceRaw, NaN), 2, '0.00');
       const heartRateValue = Math.round(toNumber(record.heartRate, 0)).toString();
+      const rpmValue = Math.round(toNumber(record.rpm, toNumber(record.heartRate, 0))).toString();
       const maxSpeedValue = toFixedString(toNumber(record.maxSpeed, NaN), 1, '0.0');
       const minSpeedValue = toFixedString(toNumber(record.minSpeed, NaN), 1, '0.0');
       const inclineValue = toFixedString(toNumber(record.incline, NaN), 1, '0.0');
@@ -344,6 +345,7 @@ Page({
         calories: caloriesValue,
         distance: distanceValue,
         heartRate: heartRateValue,
+        rpm: rpmValue,
         maxSpeed: maxSpeedValue,
         minSpeed: minSpeedValue,
         incline: inclineValue,
@@ -605,6 +607,8 @@ Page({
         incline: fullRecord.incline ? fullRecord.incline.toString() : '0',
         maxIncline: fullRecord.maxIncline ? fullRecord.maxIncline.toString() : '0',
         minIncline: fullRecord.minIncline ? fullRecord.minIncline.toString() : '0',
+        rpm: fullRecord.rpm ? fullRecord.rpm.toString() : '0',
+        watt: fullRecord.watt ? fullRecord.watt.toString() : '0',
         heartRate: fullRecord.heartRate ? fullRecord.heartRate.toString() : '0',
         title: title
       });

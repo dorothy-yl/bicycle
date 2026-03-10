@@ -222,13 +222,12 @@ Page({
 
       const dpID = formatDpState(event.dps);
       dpID.forEach(element => {
-        // 最大阻力 - dp 点 111
+        // 踏频 - dp 点 111
         if (element.code == 111) {
-          console.log('历史详情页收到设备上报最大阻力:', element.value);
-          // 实时更新最大阻力
+          console.log('历史详情页收到设备上报踏频:', element.value);
           if (this.data.record) {
             this.setData({
-              'record.maxResistance': element.value.toString()
+              'record.rpm': element.value.toString()
             });
           }
         }

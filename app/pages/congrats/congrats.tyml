@@ -3,7 +3,12 @@
   <view class="overlay"></view>
 
   <view class="content">
-    <text class="page-title">{{pageTitle}}</text>
+    <view class="header-row">
+      <view class="back-btn" bindtap="onBackTap">
+        <image class="back-icon" src="../../assets/icons/Vector.svg" mode="aspectFit"></image>
+      </view>
+      <text class="page-title">{{pageTitle}}</text>
+    </view>
 
     <view class="top-card">
       <view class="user-header">
