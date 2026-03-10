@@ -57,11 +57,11 @@
 
         <!-- Right Column -->
         <view class="right-column">
-          <!-- Incline Card -->
+          <!-- Power Card -->
           <view class="stats-card small-card">
             <text class="card-title">{{inclineLabel}}</text>
             <view class="card-icon-small">
-              <image src="../../assets/icons/Group 19.svg" mode="aspectFit"></image>
+              <image src="../../assets/icons/Vector 2.svg" mode="aspectFit"></image>
             </view>
             <view class="small-value-row">
               <text class="medium-value">{{incline}}</text>

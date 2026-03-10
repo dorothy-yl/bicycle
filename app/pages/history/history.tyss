@@ -86,21 +86,6 @@
   box-sizing: border-box;
 }
 
-/* Loading State Placeholder */
-.loading-placeholder {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 120rpx 40rpx;
-  min-height: 400rpx;
-}
-
-.loading-text {
-  font-size: 32rpx;
-  color: #8E8E93;
-  text-align: center;
-}
-
 /* Empty State Placeholder */
 .empty-placeholder {
   display: flex;
@@ -158,13 +143,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.card-extra {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 24rpx;
 }
 
 .stat-item {

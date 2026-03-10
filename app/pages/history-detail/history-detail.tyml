@@ -3,18 +3,13 @@
     <view class="back-btn" bindtap="goBack">
       <image class="back-icon" src="../../assets/icons/Vector.svg" mode="aspectFit"></image>
     </view>
-      <view class="header-title">
+    <view class="header-title">
       <text class="page-title">{{detailsLabel}}</text>
-      <text class="page-subtitle" ty:if="{{record}}">{{record.title || quickStartLabel}}</text>
+      <text class="page-subtitle">{{record.title || quickStartLabel}}</text>
     </view>
   </view>
 
-  <!-- 空状态提示 -->
-  <view class="empty-placeholder" ty:if="{{showEmptyState}}">
-    <text class="empty-text">{{noDataLabel}}</text>
-  </view>
-
-  <view class="content" ty:if="{{record && !showEmptyState}}">
+  <view class="content" ty:if="{{record}}">
     <!-- 顶部卡片（与 history 页面一致） -->
     <view class="top-card">
       <view class="card-header">
@@ -30,21 +25,20 @@
         </view>
         <view class="stat-divider"></view>
         <view class="stat-item">
-          <text class="stat-label">{{inclineLabel}}</text>
-          <text class="stat-val">{{record.incline || '52'}}</text>
+          <text class="stat-label">{{rpmLabel}}</text>
+          <text class="stat-val">{{record.rpm || '52'}}</text>
         </view>
         <view class="stat-divider"></view>
         <view class="stat-item">
-          <text class="stat-label">{{distanceKmLabel}}</text>
-          <text class="stat-val">{{record.distance || '50.1'}}</text>
+          <text class="stat-label">{{powerWLabel}}</text>
+          <text class="stat-val">{{record.watt || '50.1'}}</text>
         </view>
       </view>
-    
     </view>
 
-    <!-- Speed、Calories 卡片 -->
+    <!-- Speed、Calories、Distance 卡片 -->
     <view class="middle-cards-row">
-      <!-- Speed 卡片（左侧） -->
+      <!-- Speed 卡片（左侧，高度等于右侧两个卡片之和） -->
       <view class="speed-card">
         <text class="card-label">{{speedKmhLabel}}</text>
         <view class="card-icon green">
@@ -55,22 +49,37 @@
         </view>
       </view>
       
-      <!-- Calories 卡片（右侧） -->
-      <view class="info-card">
-        <text class="card-label">{{caloriesLabel}}</text>
-        <view class="card-icon orange">
-          <image src="../../assets/icons/Vector 2.svg" mode="aspectFit"></image>
+      <!-- 右侧两个卡片 -->
+      <view class="right-cards-column">
+        <view class="info-card">
+          <text class="card-label">{{caloriesLabel}}</text>
+          <view class="card-icon orange">
+            <image src="../../assets/icons/Vector 2.svg" mode="aspectFit"></image>
+          </view>
+          <view class="card-value-wrapper">
+            <text class="card-values">{{record.calories}}kcal</text>
+          </view>
         </view>
-        <view class="card-value-wrapper">
-          <text class="card-values">{{record.calories}}kcal</text>
+        <view class="info-card">
+          <text class="card-label">{{distanceLabel}}</text>
+          <view class="card-icon blue">
+            <image src="../../assets/icons/Group 11.svg" mode="aspectFit"></image>
+          </view>
+          <view class="card-value-wrapper">
+            <text class="card-values">{{record.distance}}km</text>
+          </view>
         </view>
       </view>
     </view>
 
-    <!-- 底部卡片 -->
+    <!-- 底部二个卡片 -->
     <view class="bottom-cards">
       <view class="bottom-card-item">
-        <text class="bottom-card-label">{{workoutTimeLabel}}</text>
+        <text class="bottom-card-label">{{maxResistanceLabel}}</text>
+        <text class="bottom-card-value">{{record.maxResistance || '60'}}</text>
+      </view>
+      <view class="bottom-card-item">
+        <text class="bottom-card-label">{{trainingDurationLabel}}</text>
         <text class="bottom-card-value">{{record.duration || '00:20:30'}}</text>
       </view>
     </view>

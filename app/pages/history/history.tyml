@@ -1,6 +1,6 @@
 <view class="container">
   <view class="header">
-    <text class="page-title">{{workoutRecordsLabel}}</text>
+    <text class="page-title">{{sportsRecordsLabel}}</text>
   </view>
   <view class="date-selector">
     <view class="arrow-btn left" bindtap="prevDate">
@@ -16,18 +16,13 @@
   </view>
 
   <scroll-view class="record-list" scroll-y="true" refresher-enabled="true" refresher-triggered="{{isRefreshing}}" bindrefresherrefresh="onRefresherRefresh" refresher-background="#2C3A4A">
-    <!-- Loading 状态 -->
-    <view class="loading-placeholder" ty:if="{{isLoading}}">
-      <text class="loading-text">加载中...</text>
-    </view>
-    
     <!-- 空状态占位 -->
-    <view class="empty-placeholder" ty:if="{{!isLoading && records.length === 0}}">
+    <view class="empty-placeholder" ty:if="{{records.length === 0}}">
       <text class="empty-text">{{noRecordsTodayLabel}}</text>
     </view>
     
     <!-- 记录卡片列表 -->
-   <view class="record-card" ty:if="{{!isLoading}}" ty:for="{{records}}" ty:key="id" ty:for-item="item" bindtap="goToDetail" data-id="{{item.id}}">
+   <view class="record-card" ty:for="{{records}}" ty:key="id" ty:for-item="item" bindtap="goToDetail" data-id="{{item.id}}">
       <view class="card-header">
         <view class="duration-group">
           <text class="duration-val">{{item.title}}</text>
@@ -42,16 +37,15 @@
         </view>
         <view class="stat-divider"></view>
         <view class="stat-item">
-          <text class="stat-label">{{inclineLabel}}</text>
-          <text class="stat-val">{{item.incline}}</text>
+          <text class="stat-label">{{rpmLabel}}</text>
+          <text class="stat-val">{{item.rpm}}</text>
         </view>
         <view class="stat-divider"></view>
         <view class="stat-item">
-          <text class="stat-label">{{distanceKmLabel}}</text>
-          <text class="stat-val">{{item.distance}}</text>
+          <text class="stat-label">{{powerWLabel}}</text>
+          <text class="stat-val">{{item.watt}}</text>
         </view>
       </view>
-     
     </view>
   </scroll-view>
 

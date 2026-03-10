@@ -136,57 +136,6 @@
   flex-shrink: 0;
 }
 
-/* Speed Control Row */
-.speed-control-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 24rpx;
-  gap: 24rpx;
-  flex-shrink: 0;
-}
-
-.speed-control-btn {
-  width: 96rpx;
-  height: 96rpx;
-  border-radius: 50%;
-  background-color: #2B3240;
-  display: flex;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.speed-control-icon {
-  font-size: 84rpx;
-  color: #FFFFFF;
-  line-height: 1;
-  transition: color 0.2s ease;
-}
-
-.speed-control-icon-pressed {
-  color: #A2E525;
-}
-
-.speed-display-card {
-  flex: 1;
-  background-color: #151F2F;
-  border-radius: 24rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 198rpx;
-}
-
-.speed-display-value {
-  font-size: 96rpx;
-  font-weight: bold;
-  font-family: monospace;
-  letter-spacing: 4rpx;
-  text-align: center;
-  color: #FFFFFF;
-}
-
 .timer-display {
   font-size: 96rpx;
   font-weight: bold;

@@ -8,11 +8,11 @@
     <view class="header-placeholder"></view>
   </view>
 
-  <!-- HR and Calories Row -->
+  <!-- Speed and Heart Rate Row -->
   <view class="top-row">
     <view class="top-stat-item">
-      <text class="top-stat-value">{{heartRate}}</text>
-      <text class="top-stat-label">{{hrBpmLabel}}</text>
+      <text class="top-stat-value">{{speed}}</text>
+      <text class="top-stat-label">{{speedKmhLabel}}</text>
     </view>
     <view class="vertical-divider"></view>
     <view class="top-stat-item">
@@ -30,24 +30,26 @@
     <text class="timer-display">{{formattedTime}}</text>
   </view>
 
+  <!-- 3-Column Stats Grid -->
+  <view class="stats-grid">
+    <view class="card stat-card">
+      <text class="card-label">{{rpmLabel}}</text>
+      <text class="card-value">{{rpm}}</text>
+    </view>
+    <view class="card stat-card">
+      <text class="card-label">{{hrBpmLabel}}</text>
+      <text class="card-value">{{heartRate}}</text>
+    </view>
+    <view class="card stat-card">
+      <text class="card-label">{{powerWLabel}}</text>
+      <text class="card-value">{{watt}}</text>
+    </view>
+  </view>
+
   <!-- Distance Card -->
   <view class="card timer-card">
     <text class="card-label">{{distanceKmLabel}}</text>
     <text class="timer-display">{{distance}}</text>
-  </view>
-
-  <!-- Speed Control Row -->
-  <view class="speed-control-row">
-    <view class="speed-control-btn" bindtap="handleDecreaseSpeed">
-      <text class="speed-control-icon {{isDecreaseSpeedPressed ? 'speed-control-icon-pressed' : ''}}">-</text>
-    </view>
-    <view class="speed-display-card">
-      <text class="card-label">{{speedKmhLabel}}</text>
-      <text class="speed-display-value">{{speed}}</text>
-    </view>
-    <view class="speed-control-btn" bindtap="handleIncreaseSpeed">
-      <text class="speed-control-icon {{isIncreaseSpeedPressed ? 'speed-control-icon-pressed' : ''}}">+</text>
-    </view>
   </view>
 
 
@@ -61,7 +63,7 @@
       <!-- Center Text -->
       <view class="gauge-center-cover">
         <text class="gauge-center-value">{{load}}</text>
-        <text class="gauge-center-label">{{inclineLabel}}</text>
+        <text class="gauge-center-label">{{loadLabel}}</text>
       </view>
       <!-- Gauge Knob -->
       <view class="gauge-knob-container" style="transform: rotate({{knobAngle}}deg);">
@@ -76,6 +78,6 @@
 
   <!-- Bottom Button -->
   <view class="footer">
-    <button class="main-action-btn" bindlongpress="handleMainActionLongPress" bindtap="handleMainActionTap">{{startHoldStopLabel}}</button>
+    <button class="main-action-btn" bindlongpress="stopExercise" bindtap="togglePause">{{startHoldStopLabel}}</button>
   </view>
 </view>
